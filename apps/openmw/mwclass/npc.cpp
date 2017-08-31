@@ -955,6 +955,24 @@ namespace MWClass
         if(npcdata->mNpcStats.isWerewolf() && running && npcdata->mNpcStats.getDrawState() == MWMechanics::DrawState_Nothing)
             moveSpeed *= gmst.fWereWolfRunMult->getFloat();
 
+		//OPENMWX START
+
+		if (ptr == MWMechanics::getPlayer() && running && !sneaking) //if we are getting the player's running speed, while not sneaking
+		{
+			if (ptr.getClass().getCreatureStats(ptr).getDrawState() != MWMechanics::DrawState_Weapon) // and if the player has weapon drawn
+			{
+				moveSpeed = 500; //Nice and fast movement speed
+				if (world->isSwimming(ptr))
+				{
+					moveSpeed -= 300; //Slower if swimming
+				}
+				return moveSpeed;
+			}
+		}
+
+		//OPENMWX END
+
+
         return moveSpeed;
     }
 
